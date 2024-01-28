@@ -1,0 +1,37 @@
+services:
+  frontend:
+    build: ./frontend
+    container_name: frontend
+    volumes:
+      - ./frontend:/app
+    ports:
+      - 3000:3000
+# ttyとstdin_openでコンテナ起動永続化
+    tty: true
+    stdin_open: true
+    environment:
+# next-ts環境でホットリロードを有効化
+      - WATCHPACK_POLLING=true
+
+  backend:
+    build: ./backend
+    container_name: backend
+    volumes:
+      - './backend:/backend'
+    ports:
+      - 8000:8000
+    tty: true
+
+  mysql8:
+    image: mysql:8
+    container_name: mysql01
+    command:
+      --collation-server=utf8mb4_0900_bin
+      --transaction-isolation=READ-COMMITTED
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: $PASSWORD
+      TZ: Asia/Tokyo
+    ports:
+      - 53306:3306
+  

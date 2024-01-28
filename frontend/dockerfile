@@ -1,0 +1,6 @@
+FROM almalinux:9
+
+RUN yum module install -y nodejs:20
+
+WORKDIR /app
+
